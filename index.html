@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROVR RADIO — Fan Tribute</title>
+<meta name="description" content="Hommage non-officiel à la direction artistique de ROVR (rovr.live) : radio live, titre jaune, bouton hero insaisissable.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#000000;
+    --yellow:#FFF057;
+    --fg:#fafaf5;
+    --muted-2:#4a4a3c;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--black);
+    color:var(--fg);
+    font-family:'Archivo', system-ui, sans-serif;
+    overflow-x:hidden;
+  }
+
+  /* pixel-art cursor — drawn as hard-edged box-shadow "pixels", no blur/filter/scaling
+     so it stays crisp (a simple retro sprite) instead of a smoothed/filtered shape */
+  html.fine-pointer, html.fine-pointer *{ cursor:none !important; }
+  .pixel-cursor{
+    position:fixed; top:0; left:0;
+    width:2px; height:2px;
+    background:transparent;
+    pointer-events:none;
+    z-index:9999;
+    opacity:0;
+    box-shadow:
+      0px 0px 0 0 #FFF057,
+      0px 2px 0 0 #FFF057,
+      2px 2px 0 0 #FFF057,
+      0px 4px 0 0 #FFF057,
+      2px 4px 0 0 #FFF057,
+      4px 4px 0 0 #FFF057,
+      0px 6px 0 0 #FFF057,
+      2px 6px 0 0 #FFF057,
+      4px 6px 0 0 #FFF057,
+      6px 6px 0 0 #FFF057,
+      0px 8px 0 0 #FFF057,
+      2px 8px 0 0 #FFF057,
+      4px 8px 0 0 #FFF057,
+      6px 8px 0 0 #FFF057,
+      8px 8px 0 0 #FFF057,
+      0px 10px 0 0 #FFF057,
+      2px 10px 0 0 #FFF057,
+      4px 10px 0 0 #FFF057,
+      6px 10px 0 0 #FFF057,
+      8px 10px 0 0 #FFF057,
+      10px 10px 0 0 #FFF057,
+      0px 12px 0 0 #FFF057,
+      2px 12px 0 0 #FFF057,
+      4px 12px 0 0 #FFF057,
+      6px 12px 0 0 #FFF057,
+      8px 12px 0 0 #FFF057,
+      10px 12px 0 0 #FFF057,
+      12px 12px 0 0 #FFF057,
+      0px 14px 0 0 #FFF057,
+      2px 14px 0 0 #FFF057,
+      4px 14px 0 0 #FFF057,
+      0px 16px 0 0 #FFF057,
+      2px 2px 0 0 #000,
+      2px 4px 0 0 #000,
+      4px 4px 0 0 #000,
+      2px 6px 0 0 #000,
+      4px 6px 0 0 #000,
+      6px 6px 0 0 #000,
+      2px 8px 0 0 #000,
+      4px 8px 0 0 #000,
+      6px 8px 0 0 #000,
+      8px 8px 0 0 #000,
+      2px 10px 0 0 #000,
+      4px 10px 0 0 #000,
+      6px 10px 0 0 #000,
+      8px 10px 0 0 #000,
+      10px 10px 0 0 #000,
+      2px 12px 0 0 #000,
+      4px 12px 0 0 #000,
+      6px 12px 0 0 #000,
+      8px 12px 0 0 #000,
+      10px 12px 0 0 #000,
+      12px 12px 0 0 #000,
+      2px 14px 0 0 #000,
+      4px 14px 0 0 #000,
+      6px 14px 0 0 #000,
+      8px 14px 0 0 #000,
+      10px 14px 0 0 #000,
+      12px 14px 0 0 #000,
+      14px 14px 0 0 #000,
+      2px 16px 0 0 #000,
+      4px 16px 0 0 #000,
+      6px 16px 0 0 #000,
+      2px 18px 0 0 #000;
+  }
+  html.fine-pointer .pixel-cursor.active{ opacity:1; }
+
+  /* header */
+  .site-header{
+    background:var(--black);
+    border-bottom:2px solid var(--yellow);
+    padding:16px 20px;
+  }
+  .logo{ display:inline-flex; align-items:center; gap:4px; }
+  .logo span{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:28px; height:28px;
+    background:var(--yellow);
+    color:var(--black);
+    font-weight:900;
+    font-size:16px;
+    border-radius:4px;
+    transform:skewX(-8deg);
+  }
+
+  /* hero */
+  .hero{
+    position:relative;
+    min-height:min(74vh, 640px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    overflow:hidden;
+  }
+  .hero-media{
+    position:absolute; inset:0; z-index:-1;
+    background:
+      radial-gradient(120% 90% at 75% 15%, rgba(255,240,87,.5), transparent 55%),
+      linear-gradient(200deg, #4a4522 0%, #100f04 46%, #000 78%);
+  }
+
+  .headline{
+    font-weight:900;
+    text-transform:uppercase;
+    color:var(--yellow);
+    font-size:clamp(30px, 6vw, 72px);
+    line-height:1;
+    letter-spacing:-.01em;
+    text-align:center;
+    max-width:18ch;
+    margin:0;
+  }
+
+  /* runaway button: fixed to the viewport so it can roam the whole page.
+     On a fine (mouse) pointer it can never be hovered/clicked — that's the guarantee.
+     On touch there's no hover to dodge, so it stays tappable and flees on every tap instead. */
+  .chase-btn{
+    position:fixed;
+    left:50%; top:78%;
+    transform:translate(-50%,-50%);
+    display:inline-flex;
+    align-items:center;
+    padding:16px 26px;
+    border-radius:999px;
+    background:var(--yellow);
+    color:var(--black);
+    border:none;
+    font-family:inherit;
+    font-weight:900;
+    font-size:clamp(12px,1.6vw,15px);
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    z-index:80;
+    cursor:pointer;
+  }
+  html.fine-pointer .chase-btn{ pointer-events:none; }
+  html:not(.fine-pointer) .chase-btn{
+    transition: left .25s cubic-bezier(.34,1.56,.64,1), top .25s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  /* player — the whole bar turns yellow while live, and the now-playing
+     info appears on it; the button itself inverts to black */
+  .player-bar{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:clamp(24px,4vw,40px) 20px;
+    background:var(--black);
+    border-top:2px solid var(--yellow);
+    transition:background .25s ease;
+  }
+  .player-bar.is-live{ background:var(--yellow); }
+
+  .play-btn{
+    width:clamp(56px,7vw,72px);
+    height:clamp(56px,7vw,72px);
+    border-radius:50%;
+    background:var(--yellow);
+    color:var(--black);
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    transition:opacity .2s ease, background .25s ease, color .25s ease;
+  }
+  .player-bar.is-live .play-btn{ background:var(--black); color:var(--yellow); }
+  .play-btn svg{ width:38%; height:38%; }
+  .play-btn svg path{ fill:currentColor; }
+  .play-btn .icon-pause{ display:none; }
+  .play-btn.is-playing .icon-play{ display:none; }
+  .play-btn.is-playing .icon-pause{ display:block; }
+  .play-btn.is-loading{ opacity:.55; pointer-events:none; }
+
+  /* now playing — appears inside the player bar once it's actually live */
+  .now-playing{
+    max-height:0;
+    overflow:hidden;
+    width:100%;
+    color:var(--black);
+    transition:max-height .3s ease, margin-top .3s ease;
+  }
+  .player-bar.is-live .now-playing{ max-height:160px; margin-top:20px; }
+  .now-playing-inner{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-width:420px;
+    margin:0 auto;
+  }
+  .np-row{ display:flex; gap:10px; align-items:baseline; }
+  .np-key{
+    font-weight:900;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    opacity:.6;
+    min-width:56px;
+  }
+  .np-val{ font-weight:700; font-size:15px; }
+
+  /* footer */
+  .site-footer{
+    padding:16px 20px;
+    text-align:center;
+    background:var(--black);
+    color:var(--muted-2);
+    font-size:12px;
+  }
+  .site-footer a{ color:inherit; }
+</style>
+</head>
+<body>
+
+<div class="pixel-cursor" id="pixelCursor"></div>
+
+<header class="site-header">
+  <span class="logo"><span>R</span><span>O</span><span>V</span><span>R</span></span>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="hero-media" aria-hidden="true"></div>
+    <h1 class="headline">Music is meant to<br>broaden your horizons</h1>
+    <button class="chase-btn" id="chaseBtn" type="button" tabindex="0">What the algorithm suggests</button>
+  </section>
+
+  <section class="player-bar" id="playerBar">
+    <button class="play-btn" id="playBtn" type="button" aria-label="Lire la radio en direct">
+      <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"></path></svg>
+      <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+    </button>
+
+    <div class="now-playing" id="nowPlaying">
+      <div class="now-playing-inner">
+        <div class="np-row"><span class="np-key">Track</span><span class="np-val" id="npTitle">—</span></div>
+        <div class="np-row"><span class="np-key">Artist</span><span class="np-val" id="npArtist">—</span></div>
+        <div class="np-row"><span class="np-key">Label</span><span class="np-val" id="npLabel">—</span></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Hommage fan non-officiel, non affilié à ROVR — <a href="https://rovr.live" target="_blank" rel="noopener noreferrer">rovr.live</a></p>
+</footer>
+
+<audio id="radio" preload="none" crossorigin="anonymous"></audio>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.17/hls.min.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var STREAM_URL = "https://hls-prod.rovr.live/prod/stream_plus00/llhls.m3u8";
+
+  /* ---- pixel-art cursor: tracks the pointer 1:1, tip-anchored ---- */
+  var isFinePointer = window.matchMedia && window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if (isFinePointer) document.documentElement.classList.add("fine-pointer");
+
+  var cursorEl = document.getElementById("pixelCursor");
+  var mouse = { x: -9999, y: -9999 };
+  var hasMouse = false;
+
+  if (isFinePointer){
+    document.addEventListener("mousemove", function(e){
+      mouse.x = e.clientX; mouse.y = e.clientY;
+      if (!hasMouse){ hasMouse = true; cursorEl.classList.add("active"); }
+      cursorEl.style.transform = "translate(" + mouse.x + "px," + mouse.y + "px)";
+    }, { passive:true });
+  }
+
+  /* ---- runaway button: brisk, decisive evasion that reacts well before the
+         cursor gets close (so it never visually sits under/near the pointer),
+         roams the whole page including above the headline, reappears near the
+         middle of the screen if it's ever pushed all the way past an edge, and
+         has a hard panic-jump safety net so it can never actually be reached. ---- */
+  var chaseHero = document.getElementById("hero");
+  var chaseBtn = document.getElementById("chaseBtn");
+  var DETECT_RADIUS = 240; // starts fleeing well before the cursor is anywhere near it
+  var PANIC_RADIUS = 90;   // absolute safety net: if it's ever this close anyway, jump immediately
+  var SPEED = 11;          // px per frame at closest range — brisk and decisive, not a slow creep
+  var pos = null;
+
+  function viewportBounds(r){
+    var margin = 6;
+    return {
+      margin: margin,
+      maxX: Math.max(margin, window.innerWidth - r.width - margin),
+      maxY: Math.max(margin, window.innerHeight - r.height - margin)
+    };
+  }
+
+  // On touch devices the chase never runs (no hover/cursor to react to), so this
+  // starting spot is also its permanent spot — anchor it inside the hero itself
+  // (not a raw % of the viewport) so it can never land on/overlap the player bar.
+  function placeSafelyInHero(){
+    var hr = chaseHero.getBoundingClientRect();
+    var r = chaseBtn.getBoundingClientRect();
+    pos = {
+      x: hr.left + hr.width / 2 - r.width / 2,
+      y: hr.top + hr.height * 0.72 - r.height / 2
+    };
+    chaseBtn.style.left = pos.x + "px";
+    chaseBtn.style.top = pos.y + "px";
+    chaseBtn.style.transform = "translate(0,0)";
+  }
+  placeSafelyInHero();
+  window.addEventListener("load", placeSafelyInHero);
+
+  function takeControl(){
+    if (pos) return;
+    var r = chaseBtn.getBoundingClientRect();
+    pos = { x: r.left, y: r.top };
+    chaseBtn.style.left = pos.x + "px";
+    chaseBtn.style.top = pos.y + "px";
+    chaseBtn.style.transform = "translate(0,0)";
+  }
+
+  // pick a spot far from the cursor, anywhere on the page (including above the headline)
+  function farSpot(r, mx, my){
+    var b = viewportBounds(r);
+    var best = null, bestDist = -1;
+    for (var i = 0; i < 14; i++){
+      var nx = b.margin + Math.random() * (b.maxX - b.margin);
+      var ny = b.margin + Math.random() * (b.maxY - b.margin);
+      var d = Math.hypot(nx + r.width/2 - mx, ny + r.height/2 - my);
+      if (d > bestDist){ bestDist = d; best = { x: nx, y: ny }; }
+    }
+    return best;
+  }
+
+  // touch has no hover to dodge, so instead it flees on every tap
+  if (!isFinePointer){
+    chaseBtn.addEventListener("click", function(){
+      var r = chaseBtn.getBoundingClientRect();
+      var jump = farSpot(r, pos.x + r.width / 2, pos.y + r.height / 2);
+      pos.x = jump.x; pos.y = jump.y;
+      chaseBtn.style.left = pos.x + "px";
+      chaseBtn.style.top = pos.y + "px";
+    });
+  }
+
+  function chaseTick(){
+    if (isFinePointer && hasMouse){
+      takeControl();
+      var r = chaseBtn.getBoundingClientRect();
+      var cx = pos.x + r.width / 2;
+      var cy = pos.y + r.height / 2;
+      var dx = cx - mouse.x, dy = cy - mouse.y;
+      var dist = Math.hypot(dx, dy) || 0.0001;
+
+      if (dist < PANIC_RADIUS){
+        var jump = farSpot(r, mouse.x, mouse.y);
+        pos.x = jump.x; pos.y = jump.y;
+      } else if (dist < DETECT_RADIUS){
+        var force = 1 - dist / DETECT_RADIUS;
+        pos.x += (dx / dist) * SPEED * force;
+        pos.y += (dy / dist) * SPEED * force;
+      }
+
+      // pushed all the way out past an edge of the frame -> reappears near the middle
+      var vw = window.innerWidth, vh = window.innerHeight;
+      var fullyOut = (pos.x + r.width < 0) || (pos.x > vw) || (pos.y + r.height < 0) || (pos.y > vh);
+      if (fullyOut){
+        pos.x = vw / 2 - r.width / 2 + (Math.random() * 60 - 30);
+        pos.y = vh / 2 - r.height / 2 + (Math.random() * 60 - 30);
+      }
+
+      chaseBtn.style.left = pos.x + "px";
+      chaseBtn.style.top = pos.y + "px";
+    }
+    requestAnimationFrame(chaseTick);
+  }
+  requestAnimationFrame(chaseTick);
+
+  window.addEventListener("resize", function(){
+    if (isFinePointer) { pos = null; }
+    else { placeSafelyInHero(); } // e.g. phone rotation — keep it anchored inside the hero
+  });
+
+  /* ---- ID3 metadata parsing (title / artist / label embedded live in the stream) ---- */
+  function decodeId3Text(bytes){
+    if (!bytes || !bytes.length) return "";
+    var enc = bytes[0];
+    var rest = bytes.subarray ? bytes.subarray(1) : bytes.slice(1);
+    try {
+      if (enc === 1 || enc === 2){
+        var le = true, start = 0;
+        if (enc === 1 && rest.length >= 2 && rest[0] === 0xFF && rest[1] === 0xFE){ le = true; start = 2; }
+        else if (enc === 1 && rest.length >= 2 && rest[0] === 0xFE && rest[1] === 0xFF){ le = false; start = 2; }
+        else if (enc === 2){ le = false; }
+        var units = [];
+        for (var i = start; i + 1 < rest.length; i += 2){
+          var cu = le ? (rest[i] | (rest[i+1] << 8)) : ((rest[i] << 8) | rest[i+1]);
+          if (cu === 0) break;
+          units.push(cu);
+        }
+        return String.fromCharCode.apply(null, units);
+      } else if (enc === 3){
+        var end = rest.indexOf(0);
+        var slice = end >= 0 ? rest.slice(0, end) : rest;
+        return new TextDecoder("utf-8").decode(new Uint8Array(slice));
+      } else {
+        var end2 = rest.indexOf(0);
+        var slice2 = end2 >= 0 ? rest.slice(0, end2) : rest;
+        var out = "";
+        for (var j = 0; j < slice2.length; j++) out += String.fromCharCode(slice2[j]);
+        return out;
+      }
+    } catch (e) { return ""; }
+  }
+
+  function parseId3(bytes){
+    if (!bytes || bytes.length < 10) return null;
+    if (bytes[0] !== 0x49 || bytes[1] !== 0x44 || bytes[2] !== 0x33) return null; // "ID3"
+    var major = bytes[3];
+    var size = ((bytes[6] & 0x7f) << 21) | ((bytes[7] & 0x7f) << 14) | ((bytes[8] & 0x7f) << 7) | (bytes[9] & 0x7f);
+    var offset = 10;
+    var end = Math.min(bytes.length, 10 + size);
+    var frames = {};
+    while (offset + 10 <= end){
+      var id = String.fromCharCode(bytes[offset], bytes[offset+1], bytes[offset+2], bytes[offset+3]);
+      if (!/^[A-Z0-9]{4}$/.test(id)) break;
+      var frameSize;
+      if (major >= 4){
+        frameSize = ((bytes[offset+4] & 0x7f) << 21) | ((bytes[offset+5] & 0x7f) << 14) | ((bytes[offset+6] & 0x7f) << 7) | (bytes[offset+7] & 0x7f);
+      } else {
+        frameSize = (bytes[offset+4] << 24) | (bytes[offset+5] << 16) | (bytes[offset+6] << 8) | (bytes[offset+7]);
+      }
+      var frameStart = offset + 10;
+      var frameEnd = frameStart + frameSize;
+      if (frameSize <= 0 || frameEnd > bytes.length) break;
+      frames[id] = decodeId3Text(bytes.slice(frameStart, frameEnd));
+      offset = frameEnd;
+    }
+    return frames;
+  }
+
+  var playerBar = document.getElementById("playerBar");
+  var npTitle = document.getElementById("npTitle");
+  var npArtist = document.getElementById("npArtist");
+  var npLabel = document.getElementById("npLabel");
+
+  function sanitizeText(s){
+    return (s || "").replace(/[​-‍﻿]/g, "").trim();
+  }
+
+  function handleId3Sample(sample){
+    var frames = parseId3(sample.data);
+    if (!frames) return;
+    if (frames.TIT2) npTitle.textContent = sanitizeText(frames.TIT2);
+    if (frames.TPE1) npArtist.textContent = sanitizeText(frames.TPE1);
+    if (frames.TALB) npLabel.textContent = sanitizeText(frames.TALB);
+  }
+
+  /* ---- live radio (real HLS stream) ---- */
+  var audio = document.getElementById("radio");
+  var playBtn = document.getElementById("playBtn");
+  var hls = null, ready = false, playing = false;
+
+  function initStream(){
+    return new Promise(function(resolve, reject){
+      if (ready){ resolve(); return; }
+      if (window.Hls && Hls.isSupported()){
+        hls = new Hls({ liveSyncDuration: 6 });
+        hls.on(Hls.Events.MANIFEST_PARSED, function(){ ready = true; resolve(); });
+        hls.on(Hls.Events.FRAG_PARSING_METADATA, function(evt, data){
+          (data.samples || []).forEach(handleId3Sample);
+        });
+        hls.on(Hls.Events.ERROR, function(evt, data){ if (data.fatal) reject(new Error(data.details || "hls error")); });
+        hls.loadSource(STREAM_URL);
+        hls.attachMedia(audio);
+      } else if (audio.canPlayType("application/vnd.apple.mpegurl")){
+        audio.src = STREAM_URL;
+        ready = true;
+        resolve();
+      } else {
+        reject(new Error("HLS non supporté par ce navigateur"));
+      }
+    });
+  }
+
+  playBtn.addEventListener("click", function(){
+    if (playing){
+      audio.pause();
+      playing = false;
+      playBtn.classList.remove("is-playing");
+      playerBar.classList.remove("is-live");
+      return;
+    }
+    playBtn.classList.add("is-loading");
+    initStream().then(function(){
+      return audio.play();
+    }).then(function(){
+      playing = true;
+      playBtn.classList.remove("is-loading");
+      playBtn.classList.add("is-playing");
+      playerBar.classList.add("is-live");
+    }).catch(function(err){
+      playBtn.classList.remove("is-loading");
+      console.warn("ROVR tribute — lecture impossible:", err);
+    });
+  });
+})();
+</script>
+</body>
+</html>
